@@ -1,7 +1,1 @@
-[
-    {
-        "type": "tab",
-        "id": "da44dec0.4bf0a",
-        "label": "Sheet 1"
-    }
-]
+[{"type":"tab","id":"da44dec0.4bf0a","label":"Sheet 1"},{"id":"c0552987.3faad8","type":"websocket-listener","path":"ws://127.0.0.1:7204/myo/1?appid=com.example.appid","wholemsg":"false"},{"id":"94dd0a43.6b22f8","type":"websocket in","name":"Myo","server":"c0552987.3faad8","x":212,"y":284,"z":"da44dec0.4bf0a","wires":[["9cb6fe29.6349"]]},{"id":"9cb6fe29.6349","type":"debug","name":"","active":true,"console":"false","complete":"false","x":433,"y":290,"z":"da44dec0.4bf0a","wires":[]}]
