@@ -1,0 +1,33 @@
+{
+    "name": "MYO-Red",
+    "version": "0.0.0",
+    "description": "Node-red module for the Myo armband",
+    "main": "app.js",
+    "scripts": {
+        "start": "node ./app.js",
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/KamalAman/Myo-Node-Red"
+    },
+    "keywords": [
+        "Node-red",
+        "Myo",
+        "Javascript",
+        "IOT",
+        "Internet",
+        "Of",
+        "Things"
+    ],
+    "author": "MAJiK Systems",
+    "license": "ISC",
+    "dependencies": {
+        "express": "~4.9.0",
+        "node-red": "*"
+    },
+    "bugs": {
+        "url": "https://github.com/KamalAman/Myo-Node-Red/issues"
+    },
+    "homepage": "https://github.com/KamalAman/Myo-Node-Red"
+}
