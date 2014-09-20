@@ -1,4 +1,4 @@
-/*
+
  var http = require('http');
  var express = require("express");
  var RED = require("node-red");
@@ -36,15 +36,7 @@
 
 
 
- */
-
-var Myo = require('./lib/Myo/Myo');
-
-var x = new Myo();
 
 
 
 
-
-//setInterval(requestVibrate, 3000);
-//setInterval(requestSignal, 3000);

@@ -24,7 +24,8 @@
     "license": "ISC",
     "dependencies": {
         "express": "~4.9.0",
-        "node-red": "*"
+        "node-red": "*",
+        "ws": "*"
     },
     "bugs": {
         "url": "https://github.com/KamalAman/Myo-Node-Red/issues"

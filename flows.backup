@@ -1,7 +1,1 @@
-[
-    {
-        "type": "tab",
-        "id": "da44dec0.4bf0a",
-        "label": "Sheet 1"
-    }
-]
+[{"type":"tab","id":"da44dec0.4bf0a","label":"Sheet 1"},{"id":"c0552987.3faad8","type":"websocket-listener","path":"ws://127.0.0.1:7204/myo/1?appid=com.example.appid","wholemsg":"false"}]
