@@ -18,6 +18,7 @@
 
 // Sample Node-RED node file
 
+var Myo = require('./../lib/Myo/Myo');
 
 module.exports = function(RED) {
     "use strict";
@@ -28,39 +29,66 @@ module.exports = function(RED) {
     function MyoNode(n) {
         // Create a RED node
 
-        var Myo = require('./../lib/Myo/Myo');
-
-        var myo = new Myo();
-
-        var devices = myo.getDevices();
-
-        n.myo_list = devices;
-
         RED.nodes.createNode(this,n);
 
 
-
-
-        // send out the message to the rest of the workspace.
-        this.send(msg);
-
         // respond to inputs....
         this.on('input', function (msg) {
+            var devices = Myo.getDevices();
+            var myoid = n.myo_selected;
+            var device;
+            if(myoid && myoid in devices){
+                device = Myo.getDevice(myoid);
+            }
 
-            myo.connect();
+            if(!device){
+                msg.payload = 'Myo ' + myoid + ' not found'
+                this.send(msg);
+                return;
+            }
 
-            this.send(msg);
+            var that = this;
+            if(device.inplay){
+                device.vibrate(0);
+                return;
+            }
+            device.vibrate(0.5);
+            setTimeout(function(){
+                device.vibrate(0);
+                setTimeout(function(){
+                    device.vibrate(0);
+                    setTimeout(function(){
+                        device.vibrate(0);
+                        device.once('data', function(device){
+                            msg.payload = device.pose;
+                            that.send(msg, device);
+                        });
+                    }, 300);
+                }, 300);
+            }, 1000);
         });
 
         this.on("close", function() {
-            // Called when the node is shutdown - eg on redeploy.
-            // Allows ports to be closed, connections dropped etc.
-            // eg: this.client.disconnect();
         });
+
+
     }
 
     // Register the node by name. This must be called before overriding any of the
     // Node functions.
     RED.nodes.registerType("myo",MyoNode);
+
+    RED.httpAdmin.get("/myo/:id", function(req,res) {
+
+
+        try {
+            var myos = Myo.getDevices();
+            res.send(JSON.stringify(myos));
+        } catch(err) {
+            res.send(500);
+            console.log(err.stack);
+        }
+
+    });
 
 };

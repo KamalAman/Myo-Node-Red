@@ -35,7 +35,6 @@
 
     <div class="form-row">
     <select id="myo_list" name="myo_list">
-        <option value="default">...</option>
     </select>
     </div>
 
@@ -78,31 +77,63 @@
         oneditprepare: function() {
 
 
-            //get code from kamal
+           var that = this;
+            var selectList = $("#myo_list");
+            var id = this.id;
+            console.log("dropdown clicked");
+            var label = (this.name);
+            d3.xhr("myo/" + id).get(function (err, resp) {
+                if (err) {
+                    if (err.status == 404) {
+                        RED.notify("<strong>Error</strong>: inject node not deployed", "error");
+                    } else if (err.status == 500) {
+                        RED.notify("<strong>Error</strong>: inject failed, see log for details.", "error");
+                    } else if (err.status == 0) {
+                        RED.notify("<strong>Error</strong>: no response from server", "error");
+                    } else {
+                        RED.notify("<strong>Error</strong>: unexpected error: (" + err.status + ")" + err.response, "error");
+                    }
+                } else if (resp.status == 200) {
 
-            var body = this.myo_list;
+                    console.log(resp);
+                    var data = {};
+                    if(resp.response)
+                    {
+                            data = JSON.parse(resp.response);
+                    }
+                    console.log('empty');
+                    //selectList.empty();
+                    if(!data || !data.length){
+                        var el = document.createElement("option");
+                        el.textContent = 'No Myos Detected';
+                        el.value = 'Default';
+                        selectList.append(el);
+                        return;
+                    }
 
-            var select = document.getElementById("myo_list");
+                    console.log('forloop');
+                    for (var i = 0; i < data.length; i++) {
+                        var el = document.createElement("option");
+                        el.textContent = data[i].name;
+                        el.value = data[i].id;
+                        selectList.append(el);
+                    }
 
-            for (var i = 0; i < body.length; i++) {
-
-                var opt = body[i];
-                var el = document.createElement("option");
-                el.textContent = opt;
-                el.value = opt;
-                select.appendChild(el);
-
-            }
+                    console.log('selected');
+                    if(that.myo_selected){
+                        selectList.val(that.myo_selected);
+                    }
+                } else {
+                    RED.notify("<strong>Error</strong>: unexpected response: (" + resp.status + ") " + resp.response, "error");
+                }
+            });
 
         },
         oneditsave: function() {
 
             var select = document.getElementById("myo_list");
 
-            this.myo_selected = select.selectedItem.value;
-
-
-
+            this.myo_selected = select[select.selectedIndex].value;
         }
     });
 </script>
