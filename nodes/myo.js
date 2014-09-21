@@ -15,6 +15,7 @@ module.exports = function(RED) {
         this.on('input', function (msg) {
             var devices = Myo.getDevices();
             var myoid = n.myo_selected;
+
             var device;
             if(myoid && myoid in devices){
                 device = Myo.getDevice(myoid);
@@ -31,6 +32,14 @@ module.exports = function(RED) {
                 device.vibrate(0);
                 return;
             }
+
+            if(msg.myowinner == myoid){
+                device.viberate(0);
+                device.viberate(0);
+                device.viberate(0);
+                device.viberate(0);
+            }
+
             device.vibrate(0.5);
             setTimeout(function(){
                 device.vibrate(0);
