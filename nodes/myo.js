@@ -7,7 +7,7 @@ Myo = require('./../lib/Myo/Myo');
 
 module.exports = function(RED) {
     "use strict";
-    
+
     function MyoNode(n) {
 
         RED.nodes.createNode(this,n);
@@ -33,28 +33,47 @@ module.exports = function(RED) {
                 return;
             }
 
-            if(msg.myowinner == myoid){
-                device.viberate(0);
-                device.viberate(0);
-                device.viberate(0);
-                device.viberate(0);
+
+            var startNewGame = function(){
+                setTimeout(function(){
+                    device.vibrate(0.5);
+                    setTimeout(function(){
+                        device.vibrate(0);
+                        setTimeout(function(){
+                            device.vibrate(0);
+                            setTimeout(function(){
+                                device.vibrate(0);
+                                device.once('data', function(device){
+                                    msg.payload = device.pose;
+                                    msg.device = device.id;
+                                    that.send(msg, device);
+                                });
+                            }, 300);
+                        }, 300);
+                    }, 1000);
+                }, 2000);
             }
 
-            device.vibrate(0.5);
-            setTimeout(function(){
-                device.vibrate(0);
+            if(msg.myoWinner == myoid){
                 setTimeout(function(){
                     device.vibrate(0);
                     setTimeout(function(){
                         device.vibrate(0);
-                        device.once('data', function(device){
-                            msg.payload = device.pose;
-                            msg.device = device.id;
-                            that.send(msg, device);
-                        });
-                    }, 300);
-                }, 300);
-            }, 1000);
+                        setTimeout(function(){
+                            startNewGame();
+                        }, 500);
+                    }, 200);
+                }, 1000);
+            }
+            else
+            {
+                setTimeout(function(){
+                     startNewGame();
+                }, 1700);
+            }
+
+
+
         });
 
         this.on("close", function() {
